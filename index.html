@@ -1,13 +1,25 @@
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+  
+  <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css'>
 
-<div class="col-sm-5">
-  <h1>Email Obfuscated Hint Generater</h1>
+
+  
+  
+</head>
+
+<body>
+  
+<div>
   <div class="form-group">
     <label for="handle-input">Input</label>
-    <input class="form-control" type="text" id="handle-input" value="testTestTest test Test" />
+    <input class="form-control" type="text" id="handle-input" value="example@example1.com" />
   </div>
 
   <div>
-    <button class="btn btn-success" type="button" id="handle-button">obscure email</button>
+    <button class="btn btn-success" type="button" id="handle-button">Generate obfuscated email address</button>
   </div>
 <hr/>
   <div class="form-group">
@@ -15,6 +27,60 @@
     <input class="form-control" type="text" id="handle-output" readonly />
   </div>
 </div>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+
+    <script>
 
 
+var handle_button = $('#handle-button');
+var handle_output = $('#handle-output');
 
+  function validateEmail(email) {
+  var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(email);
+}
+  
+
+handle_button.on('click',function(){
+  var email = $('#handle-input').val();   
+  var data = $('#handle-input').val();
+  var emailParts = data.split('@');
+  var fullname = data.split('@')[0];
+  var firstLetter = emailParts[0].substring(0, 1);
+  var lastLetter = emailParts[0].substring(emailParts[0].length-1, emailParts[0].length);
+  emailParts[0] = emailParts[0].substring(1,emailParts[0].length-1);
+  var fullemaildomain = emailParts[1].split('.')[0]; 
+  var emaildomain = (emailParts[1].substring(0, emailParts[1].lastIndexOf(".")));
+  var emaildomainfirstLetter = emaildomain[0].substring(0, 1);
+  var emaildomainlastLetter = emaildomain.substring(emaildomain.length-1, emaildomain.length);
+  emaildomain = emaildomain.substring(1,emaildomain.length-1); 
+ var emailex =  (emailParts[1].substring( emailParts[1].lastIndexOf(".")));
+  var finalemaildomain = emaildomainfirstLetter + emaildomain.replace(/./gi, '*') + emaildomainlastLetter; 
+  var finalname = firstLetter + emailParts[0].replace(/./gi, '*') + lastLetter;
+
+  // Whitelists common email providers 
+if (fullemaildomain.match(/^(yahoo|gmail|outlook|aol|icloud|live|mail|me|msn|googlemail|hotmail|mac|yandex|ymail|naver|sina|qq|inbox)$/)){
+   var finalemaildomain = fullemaildomain;
+};
+
+  // Case if name is one character
+  
+ if (fullname.length < 2) { 
+   var finalname = "*";
+ }
+
+  // result print out and error handling
+  
+  if (validateEmail(email)) {
+        response = finalname + '@' + finalemaildomain + emailex;
+        handle_output.val(response);
+  } else {
+    handle_output.val("not valid email address");
+  }
+  
+
+})
+    </script>
+
+</body>
+</html>
